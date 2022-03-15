@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>API</title>
+
+	<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   
+    crossorigin="anonymous">
+    </script>
+    
+    <style type="text/css">
+    	body {background-color: rgba(170,217,230,.5)}
+        #get, #fetch, p  {margin-left: 20px;}
+        h2 { margin-left: 10px;}
+        p { margin-bottom: 100px }
+    </style>
+    
+</head>
+
+<body>
+
+    <h1> API </h1>
+    
+    <h2>Using AJAX data pattern</h2>
+    <div id= "get">&nbsp;</div>  
+    
+    <h2>Using fetch</h2>
+    <div id= "fetch">&nbsp;</div>
+    
+    <h2>API Info:</h2>
+    <p>This API holds all of the public holidays and their dates and some info about them. <br>
+    API was found at: https://mixedanalytics.com/blog/list-actually-free-open-no-auth-needed-apis/ <br>
+    The options used for the API request were “get” and “fetch”. <br>
+    This API would be helpful if you are developing a calendar for a university and need to show <br>
+     which holidays the university is closed and when those holidays are. Another application where <br>
+     this API would be helpful is if a company wants to automatically send out holiday emails on <br>
+     every holiday and they need to have the dates and names for all of the holidays. </p>
+      
+</body>
+    <script language="javascript">
+
+        $.get( "https://date.nager.at/api/v2/publicholidays/2020/US", 
+            function( data ) {
+        
+            display= "";
+            data.forEach(function(holiday) { 
+
+            display += 
+                    holiday.name + " is on " +  holiday.date+"</br>";
+                }) 
+        
+            document.getElementById("get").innerHTML = display +"<br/>";
+
+        })
+
+        response = fetch("https://date.nager.at/api/v2/publicholidays/2020/US")
+            .then (response => response.text())
+            .then (data => 
+               {
+               data = JSON.parse(data)
+               currObject = data[0]
+               allData = ""
+                for (i = 0; i < data.length; i++) {
+                    holiday = data[i];
+                    allData += holiday.name + " is on " +  holiday.date+"</br>";
+                }
+                document.getElementById("fetch").innerHTML = allData;
+               })
+            .catch (error => console.log(error))
+                
+        
+    </script>
+</html>
